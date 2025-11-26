@@ -484,13 +484,8 @@ def index():
                                   query_val="", method_val="Cosine", var_val="D",
                                   results=None)
 
+# Load cache hanya 1x di startup environment
+load_or_build_cache()
+
 if __name__ == '__main__':
-    print("\n" + "="*60)
-    print("🚀 MENYIAPKAN SISTEM TEMU KEMBALI INFORMASI...")
-    print("="*60)
-    
-    # Pastikan cache siap sebelum server jalan
-    load_or_build_cache()
-    
-    print("\n🌐 Server Berjalan di: http://127.0.0.1:5002")
-    app.run(debug=True, port=5002, use_reloader=False)
+    app.run(host="0.0.0.0", port=5000)
