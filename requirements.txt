@@ -5,3 +5,4 @@ scikit-learn
 Sastrawi
 gunicorn
 nltk
+requests
