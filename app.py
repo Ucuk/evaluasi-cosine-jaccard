@@ -11,6 +11,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 
+# ============================================================
+# 1. KONFIGURASI DAN INISIALISASI SISTEM
+# ============================================================
 
 app = Flask(__name__)
 CACHE_FILE = "stbi_cache_data.pkl"
@@ -26,6 +29,9 @@ DF = None
 PREPROCESSED_DATA = {}
 TFIDF_MODELS = {}
 
+# ============================================================
+# 2. TEXT PROCESSING ULTIMATE VERSION
+# ============================================================
 
 def clean_text(text):
     if pd.isna(text):
@@ -79,6 +85,9 @@ def get_smart_snippet(text, query_terms, length=200):
 
     return snippet
 
+# ============================================================
+# 3. CACHE SYSTEM (Sangat penting untuk speed)
+# ============================================================
 
 def get_variation_key(use_sw, use_stem):
     return f"sw_{use_sw}_stem_{use_stem}"
@@ -139,6 +148,9 @@ def load_or_build_cache():
     print("✅ Cache selesai dibuat!")
     return True
 
+# ============================================================
+# 4. GROUND TRUTH SYSTEM
+# ============================================================
 
 def generate_ground_truth(query_raw, df_data):
     query_clean = clean_text(query_raw)
@@ -154,6 +166,9 @@ def generate_ground_truth(query_raw, df_data):
 
     return relevant_indices
 
+# ============================================================
+# 5. SISTEM PENCARIAN ULTIMATE (COSINE ONLY)
+# ============================================================
 
 def run_search(query):
     start_time = time.time()
@@ -205,6 +220,9 @@ def run_search(query):
     exec_time = time.time() - start_time
     return results, precision, processed_query, exec_time, len(relevant_set), list(relevant_set)
 
+# ============================================================
+# 6. UI HTML ULTIMATE DEWA
+# ============================================================
 
 HTML_TEMPLATE = """
 <!doctype html>
@@ -230,7 +248,7 @@ HTML_TEMPLATE = """
 
     <h2 class="fw-bold text-center mb-4">
         Sistem Temu Kembali Informasi<br>
-        <span class="text-primary">Cosine Similarity (Stopword + Stemming)</span>
+        <span class="text-primary">TF-IDF + Cosine Similarity (Stopword + Stemming)</span>
     </h2>
 
     <form method="POST">
@@ -335,6 +353,9 @@ HTML_TEMPLATE = """
 </html>
 """
 
+# ============================================================
+# 7. ROUTE FLASK
+# ============================================================
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -361,9 +382,12 @@ def index():
         DF=DF
     )
 
+# ============================================================
+# 8. MAIN
+# ============================================================
 
 if __name__ == "__main__":
-    print("\n🚀 MENYIAPKAN SISTEM...")
+    print("\n🚀 MENYIAPKAN SISTEM ULTIMATE DEWA...")
     load_or_build_cache()
     print("🌐 Aplikasi berjalan di http://127.0.0.1:5002")
     app.run(debug=True, port=5002, use_reloader=False)
